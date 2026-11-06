@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "goldbot"
+version = "0.1.0"
+description = "Rule-based XAUUSD trading bot for MetaTrader 5 (demo accounts only)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.1",
+    "pyarrow>=14",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "matplotlib>=3.8",
+    "tzdata; sys_platform == 'win32'",  # IANA zones for zoneinfo on Windows (already pulled in by pandas)
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+mt5 = ["MetaTrader5>=5.0.45; sys_platform == 'win32'"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

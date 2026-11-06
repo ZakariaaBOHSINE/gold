@@ -1,0 +1,54 @@
+# Gold bot settings. Secrets do NOT go here — see .env.example.
+
+# Broker symbol name varies: XAUUSD, XAUUSDm, GOLD, ...
+symbol: XAUUSD
+
+timeframes:
+  signal: M15   # timeframe the strategy generates entries on (must match the data)
+  trend: H1     # higher timeframe for the trend filter (resampled from signal data)
+
+risk:
+  risk_per_trade_pct: 0.5      # % of equity risked per trade
+  daily_loss_limit_pct: 2.0    # stop trading for the day after losing this % of equity
+  max_open_positions: 1
+  min_risk_reward: 2.0         # reward must be >= 2x risk
+  max_spread_bps: 3.0          # max spread allowed to enter, in basis points of price
+                               # (3 bps = 0.54 USD at 1800, 1.35 USD at 4500)
+  min_stop_spread_multiple: 3.0  # stop distance must be >= this x current spread (0 = off)
+  daily_reset_time: "17:00"    # trading day boundary (gold's daily break) ...
+  daily_reset_tz: America/New_York  # ... in this IANA time zone (DST handled by zoneinfo)
+  kill_switch_file: STOP       # if this file exists in the project root, no new orders
+
+strategy:                      # trend pullback v1
+  ema_trend_fast: 50           # trend timeframe (H1)
+  ema_trend_slow: 200          # trend timeframe (H1)
+  ema_zone_fast: 20            # signal timeframe (M15) pullback zone
+  ema_zone_slow: 50
+  rsi_period: 14
+  rsi_overbought: 70.0         # no longs at/above this
+  rsi_oversold: 30.0           # no shorts at/below this
+  atr_period: 14
+  pullback_lookback: 5         # previous bars in which price must have touched the zone
+  swing_lookback: 10           # bars (incl. signal bar) to find the swing low/high
+  stop_buffer_atr: 0.1         # stop goes this many ATRs beyond the swing
+  take_profit_r: 2.0           # must be >= risk.min_risk_reward
+
+backtest:
+  data_file: xauusd_m15_2021_2026.csv   # relative to paths.data
+  initial_balance: 10000.0
+  commission_per_lot: 7.0      # USD per 1.0 lot, round turn
+  use_data_spread: true        # use ask columns from data; else fake_broker.spread
+
+fake_broker:
+  spread: 0.30                 # simulated spread in price units (USD)
+  starting_balance: 10000.0
+  contract_size: 100.0         # ounces per 1.0 lot for XAUUSD
+  tick_size: 0.01              # minimum price increment
+  volume_min: 0.01
+  volume_step: 0.01
+  volume_max: 100.0
+  min_stop_distance: 0.0       # broker minimum SL distance in price units (MT5 stops level)
+
+paths:
+  data: data
+  logs: logs

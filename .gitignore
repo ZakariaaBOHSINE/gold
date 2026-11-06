@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Data and logs (keep the folders)
+data/*
+!data/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Kill switch file
+/STOP
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+.coverage
+.coverage.*
+htmlcov/
+.ipynb_checkpoints/
+*.log
+
+# Tool caches
+.dukascopy-cache/
+node_modules/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
